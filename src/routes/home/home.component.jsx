@@ -1,8 +1,7 @@
+  import Directory from '../../components/directory/directory.component';
+import { Outlet } from 'react-router-dom';
 
-import './categories.styles.scss'
-import DirectoryItem from './components/directory/directory.component';
-
-const App = () => {
+const Home = () => {
   const categories = 
   [
     {
@@ -32,9 +31,13 @@ const App = () => {
     }
   ]
 
-  return <DirectoryItem categories={categories}/>
+  return (
+    <div>
+        <Outlet/>
+        <Directory categories={categories}/>
+    </div>
+  )
 }
 
-export default App;
-
+export default Home;
 
