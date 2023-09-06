@@ -24,9 +24,9 @@ const firebaseConfig = {
 
 // Firebase AUTHENTICATION
 
-  const myAuthProvider = new firebase.auth.GoogleAuthProvider();  
+  const myGoogleAuthProvider = new firebase.auth.GoogleAuthProvider();  // We can also create 'myFacebookAuthProvider' etc...
 
-  myAuthProvider.setCustomParameters({
+  myGoogleAuthProvider.setCustomParameters({
     prompt: "select_account"
   });
 
@@ -34,16 +34,16 @@ const firebaseConfig = {
 // sign-in with popup fails for me because the browser blocks the popup (I didnt succeed to prevent this using browser settings)
 // therefore I also defined below, sign-in with redirect
 
-//export const signInWithGooglePopup = firebase.auth().signInWithPopup(myAuthProvider);
+//export const signInWithGooglePopup = firebase.auth().signInWithPopup(myGoogleAuthProvider);
 //export const signInWithGooglePopup = null; // so that we dont get error message of 'popup blocked'
 
 // maybe I should change this to: ==> anonymous function
 // anonymous function will not be executed as 'side-effect'in the initial import done upon app startup!!
-export const signInWithGooglePopup = () => firebase.auth().signInWithPopup(myAuthProvider);
+export const signInWithGooglePopup = () => firebase.auth().signInWithPopup(myGoogleAuthProvider);
 
 // signInWithRedirect was not part of this course tutorial. I just experimented with it on my own.
-/*export const signInWithGoogleRedirect = firebase.auth().signInWithRedirect(myAuthProvider);*/
-export const signInWithGoogleRedirect = () => firebase.auth().signInWithRedirect(myAuthProvider);
+/*export const signInWithGoogleRedirect = firebase.auth().signInWithRedirect(myGoogleAuthProvider);*/
+export const signInWithGoogleRedirect = () => firebase.auth().signInWithRedirect(myGoogleAuthProvider);
 
 
 //-----------------------------------------------------------
@@ -54,7 +54,8 @@ export const signInWithGoogleRedirect = () => firebase.auth().signInWithRedirect
 
 export const db = getFirestore(myFirebaseApp);
 
-export const createUserDocumentFromAuth = async (userAuthObject) => {
+export const createUserDocumentFromAuth = async (userAuthObject, additionalInfo) => {
+  if (!userAuthObject) return;
 
   // First we create a document reference even if there is no document yet,
   // And even if there is no collection ==> (the firebase will create the 'users' collection when needed)
@@ -78,7 +79,8 @@ export const createUserDocumentFromAuth = async (userAuthObject) => {
         await setDoc(userDocRef, {
           displayName,
           email,
-          createdAt
+          createdAt,
+          ...additionalInfo 
         })
     }
     catch(error) {
@@ -86,7 +88,12 @@ export const createUserDocumentFromAuth = async (userAuthObject) => {
     }
   }
 
-  return userDocRef // Returns the reference whether it was created just now or already existed!
+  return userDocRef // Returns the reference in all cases. (whether it was created just now or already existed)
+}
+
+export const creatAuthUserWithEmailAndPassword = async (email, password) => {
+  if (!email || !password) return
+  return await firebase.auth().createUserWithEmailAndPassword(email, password)
 }
 
 
