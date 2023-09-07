@@ -3,8 +3,10 @@ import { signInWithGooglePopup, signInWithGoogleRedirect, createUserDocumentFrom
 import { delay } from '../../utils/genutils/time.utils'
 import { getAuth, getRedirectResult } from 'firebase/auth'
 import SignUpForm from '../../components/sign-up-form/sign-up-form.component'
+import SignInForm from '../../components/sign-in-form/sign-in-form.component'
+import './authentication.styles.scss'
 
-const SignIn = () => {
+const Authentication = () => {
 
     const waitForResponse = async () => {
         const response = await getRedirectResult(getAuth()) // getAuth() is a Singleton which keeps the current Authentication info.
@@ -44,13 +46,13 @@ const SignIn = () => {
 
     }
     return (
-        <div>
-            <h1>Sign In Page</h1>
-            <button onClick={loginGoogleUserPopup}>Sign in with Google Popup</button>
-            <button onClick={loginGoogleUserRedirect}>Sign in with Google Redirect</button>
+        <div className='authentication-container'>
+            {/*<button onClick={loginGoogleUserPopup}>Sign in with Google Popup</button>
+            <button onClick={loginGoogleUserRedirect}>Sign in with Google Redirect</button>*/}
+            <SignInForm />
             <SignUpForm />
         </div>
     )
 }
 
-export default SignIn;
+export default Authentication;

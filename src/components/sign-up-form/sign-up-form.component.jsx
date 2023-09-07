@@ -48,7 +48,7 @@ const SignUpForm = () => {
             const userDocRef = await createUserDocumentFromAuth(response.user, {displayName}) 
             console.log("userDocRef = %O",userDocRef)
             resetFormFields()
-            }
+        }
         catch(error) {
             if (error.code == 'auth/email-already-in-use') // not necessarily in DB, but was already authenticated
                 alert(error.code)
