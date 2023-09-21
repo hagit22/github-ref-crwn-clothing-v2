@@ -1,7 +1,9 @@
 import { useState } from 'react'
+////import { useContext } from 'react'
 import { signInAuthUserWithEmailAndPassword, createUserDocumentFromAuth, signInWithGooglePopup} from '../../utils/firebase/firebase.utils'
 import FormInput from '../form-input/form-input.component'
 import Button, { Button2, Button3, Button4, Button5 } from '../button/button.component'
+////import { UserContext } from '../../context/user.context'
 import './sign-in-form.styles.scss'
 
 const defaultFormFields = {
@@ -19,6 +21,8 @@ const SignInForm = () => {
 
     //console.log("Form-Fields = %O",formFields)
 
+    ////const userContextHandle = useContext(UserContext)
+
     const handleChange = (event) => {
         const { name, value } = event.target
         setFormFields ({ ...formFields, [name]: value })
@@ -32,7 +36,9 @@ const SignInForm = () => {
         const response = await signInWithGooglePopup();
         console.log("signin response = %O", response); //This respone contains the user credential for the new signin, including the access token
         console.log("signin response.user.email = %O", response.user.email); 
-        const userDocRef = await createUserDocumentFromAuth(response.user)
+        ////const userDocRef = await createUserDocumentFromAuth(response.user)
+
+        ////userContextHandle.setCurrentUser(response.user)
         
         // Same code above with: DESTRUCTURING !!!
         //const { user } = await signInWithGooglePopup();
@@ -61,6 +67,7 @@ const SignInForm = () => {
             const response = await signInAuthUserWithEmailAndPassword (email, password)
             console.log ('calling my signInAuthUserWithEmailAndPassword = %O', response)
             resetFormFields()
+            ////userContextHandle.setCurrentUser(response.user)
         }
         catch(error) {
             alert(error.message)

@@ -101,8 +101,11 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
   return await firebase.auth().signInWithEmailAndPassword(email, password)
 }
 
+export const signOutUser = async () => await firebase.auth().signOut()
 
-
+export const onAuthStateChangedListener = (callback) => {
+  return (firebase.auth().onAuthStateChanged(callback))
+}
 
 
 

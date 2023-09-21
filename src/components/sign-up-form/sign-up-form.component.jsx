@@ -1,7 +1,9 @@
 import { useState } from 'react'
+////import { useContext } from 'react'
 import { creatAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '../../utils/firebase/firebase.utils'
 import FormInput from '../form-input/form-input.component'
 import Button, { Button2, Button3, Button4, Button5 } from '../button/button.component'
+////import { UserContext } from '../../context/user.context'
 import './sign-up-form.styles.scss'
 
 // we can create a state variable for each field seperately, or as an object with 4 fields as we are doing here:
@@ -34,6 +36,8 @@ const SignUpForm = () => {
         setFormFields(defaultFormFields)
     }
     
+    ////const userContextHandle = useContext(UserContext)
+
     const handleSubmit = async (event) => {
         event.preventDefault()  // this causes that the code here is activated only if form field values have been assigned
         if (password != confirmPassword) {
@@ -48,6 +52,8 @@ const SignUpForm = () => {
             const userDocRef = await createUserDocumentFromAuth(response.user, {displayName}) 
             console.log("userDocRef = %O",userDocRef)
             resetFormFields()
+            ////userContextHandle.setCurrentUser(response.user)
+
         }
         catch(error) {
             if (error.code == 'auth/email-already-in-use') // not necessarily in DB, but was already authenticated
